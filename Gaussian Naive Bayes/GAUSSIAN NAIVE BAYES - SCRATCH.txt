@@ -1,0 +1,21 @@
+#GAUSSIAN NAIVE BAYES - SCRATCH
+import pandas as pd
+import numpy as np
+from functools import reduce
+
+def gaussian_naive_bayes(new_data,mean,std):
+    prob = (1 / (np.sqrt(2 * np.pi) * std))*np.exp(-((new_data - mean) ** 2) / (2 * (std ** 2)))
+    return reduce(lambda x, y: x * y, prob)
+
+df = pd.read_csv("Weather_Dataset_for_GNB.csv")
+print(df)
+df_yes=df[df["Play"]=="Yes"]
+df_no=df[df["Play"]=="No"]
+
+new_data=np.array([45,85,2])
+
+yes_prob=gaussian_naive_bayes(new_data,df_yes.mean(),df_yes.std())
+no_prob=gaussian_naive_bayes(new_data,df_no.mean(),df_no.std())
+
+print("Yes Probability: ",yes_prob/(yes_prob+no_prob))
+print("No Probability: ",no_prob/(yes_prob+no_prob))
